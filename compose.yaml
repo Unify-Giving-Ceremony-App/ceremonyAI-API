@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - "5004:5004"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env  # ✅ Load environment variables
+    environment:
+      - DATABASE_URL=${DATABASE_URL}  # ✅ Uses .env variable
+    restart: always
+    command: flask run --host=0.0.0.0 --port=5004
+
+  db:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env  # ✅ Load PostgreSQL credentials from .env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  celery_worker:
+    build: .
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - .env  # Load environment variables
+    command: celery -A celery_worker worker --loglevel=info  #  Use celery_app
+    restart: always
+
+  celery_beat:
+    build: .
+    command: celery -A celery_worker.celery beat --loglevel=info
+    depends_on:
+      - redis
+      - celery_worker
+
+volumes:
+  db-data:

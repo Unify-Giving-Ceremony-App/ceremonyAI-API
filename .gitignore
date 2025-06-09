@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.log
+*.sqlite3
+*.db
+
+# Virtualenv
+.venv/
+env/
+ENV/
+venv/
+pip-wheel-metadata/
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
+.env.*
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Flask
+instance/
+*.pid
+
+# MyPy / Pyright / Pylint
+.mypy_cache/
+.pyright/
+.pylint.d/
+
+# Celery
+celerybeat-schedule
+*.pid
+
+# Docker
+*.tar
+*.bak
+docker-compose.override.yml
+
+# Logs
+*.log
+logs/
+*.out
+
+# PostgreSQL data volume (if mounted locally)
+db-data/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Editor swap/backup files
+*~
+*.swp
+*.swo
