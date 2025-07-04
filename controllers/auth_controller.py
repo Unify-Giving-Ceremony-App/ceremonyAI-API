@@ -8,6 +8,7 @@ import redis
 from config import REDIS_PORT,REDIS_HOST
 from sqlalchemy.exc import SQLAlchemyError
 from services.google_auth_service import GoogleAuthService
+from config import FRONTEND_REDIRECT_URI
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -239,8 +240,9 @@ def google_callback():
         "oauth_provider": user.oauth_provider,
         "oauth_id": user.oauth_id,
     }
+    return redirect(FRONTEND_REDIRECT_URI)
 
-    return jsonify({
-        "token": token_response,
-        "user": user_data
-    }), 200
+    # return jsonify({
+    #     "token": token_response,
+    #     "user": user_data
+    # }), 200
