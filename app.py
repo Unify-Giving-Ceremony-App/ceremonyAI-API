@@ -12,7 +12,7 @@ from config import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI,S
 
 app = Flask(__name__)
 
-CORS(app)  # Enable CORS for all routes
+CORS(app,origins=["http://localhost:3000"])  # Enable CORS for all routes
 app.secret_key = SECRET_KEY
 
 # ✅ Fix Swagger version

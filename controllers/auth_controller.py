@@ -9,6 +9,9 @@ from config import REDIS_PORT,REDIS_HOST
 from sqlalchemy.exc import SQLAlchemyError
 from services.google_auth_service import GoogleAuthService
 from config import FRONTEND_REDIRECT_URI
+from urllib.parse import quote
+from json import dumps
+from base64 import urlsafe_b64encode
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -240,9 +243,15 @@ def google_callback():
         "oauth_provider": user.oauth_provider,
         "oauth_id": user.oauth_id,
     }
-    return redirect(FRONTEND_REDIRECT_URI)
+    #  Build the payload (token + user metadata)
+    payload = {"token": token_response, "user": user_data}
 
-    # return jsonify({
-    #     "token": token_response,
-    #     "user": user_data
-    # }), 200
+    #  JSON-serialize, then Base64-encode using a URL-safe alphabet
+    json_bytes   = dumps(payload, separators=(",", ":")).encode("utf-8")
+    b64_bytes    = urlsafe_b64encode(json_bytes)          # returns bytes
+    b64_payload  = b64_bytes.rstrip(b"=").decode("utf-8") # strip '=' padding
+
+    #   Place in the URL fragment for the frontend to pick up
+    redirect_url = f"{FRONTEND_REDIRECT_URI}#data={quote(b64_payload)}"
+
+    return redirect(redirect_url)
