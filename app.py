@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flasgger import Swagger
 from controllers.auth_controller import auth_bp
 from controllers.notification_controller import notification_bp
+from controllers.newsletter_controller import newsletter_bp
 from database import SessionLocal, Base, engine
 from models.user_model import initialize_roles_and_admin
 from services.notification_service import NotificationService
@@ -35,6 +36,7 @@ swagger = Swagger(app, template={
 
 app.register_blueprint(auth_bp, url_prefix="/api/v1/auth")
 app.register_blueprint(notification_bp, url_prefix="/api/v1/notification")
+app.register_blueprint(newsletter_bp, url_prefix="/api/v1/newsletter")
 
 
 # Create tables and initialize default roles & admin user
