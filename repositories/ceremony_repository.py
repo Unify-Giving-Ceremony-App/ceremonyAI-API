@@ -5,7 +5,10 @@ class CeremonyTypeRepository:
         self.db = db_session
 
     def get_all_ceremony_types(self):
-        return self.db.query(CeremonyType).all()
+        _types = self.db.query(CeremonyType).all()
+        if not _types:
+            return []
+        return [t.to_dict() for t in _types] # Return list of types
     
     def add_ceremony_type(self, name: str, description: str = None):
         if self.db.query(CeremonyType).filter_by(name=name).first():
@@ -14,7 +17,7 @@ class CeremonyTypeRepository:
         self.db.add(ceremony_type)
         self.db.commit()
         self.db.refresh(ceremony_type)
-        return ceremony_type
+        return ceremony_type.to_dict()
 
 
 class CeremonyPlanRepository:
@@ -22,10 +25,14 @@ class CeremonyPlanRepository:
         self.db = db_session
 
     def user_ceremony_plans(self, email: str):
-        return self.db.query(CeremonyPlan).filter(CeremonyPlan.email == email).all()
+        plans = self.db.query(CeremonyPlan).filter(CeremonyPlan.email == email).all()
+        if not plans:
+            return []
+        return [plan.to_dict() for plan in plans] # Return list of plans
     
     def get_ceremony_plan_by_id(self, ceremony_id: int):
-        return self.db.query(CeremonyPlan).filter(CeremonyPlan.id == ceremony_id).first()
+        plan = self.db.query(CeremonyPlan).filter(CeremonyPlan.id == ceremony_id).first()
+        return plan.to_dict() if plan else None
     
     def delete_ceremony_plan_by_id(self, ceremony_id: int):
         plans = self.db.query(CeremonyPlan).filter(CeremonyPlan.id == ceremony_id).all()
@@ -37,8 +44,11 @@ class CeremonyPlanRepository:
         return True
 
     def get_all_ceremony_plan(self):
-        return self.db.query(CeremonyPlan).all()
-    
+        plans = self.db.query(CeremonyPlan).all()
+        if not plans:
+            return []
+        return [plan.to_dict() for plan in plans] # Return list of plans
+
     def add_ceremony_plan(self, email: str, ceremony_type: str, ceremony_title: str, ceremony_date: str, duration: int, ceremony_description: str, participants: str, ceremony_subtype: str = None):    
         ceremony_plan = CeremonyPlan(email=email,
         ceremony_type=ceremony_type,
@@ -51,4 +61,5 @@ class CeremonyPlanRepository:
         self.db.add(ceremony_plan)
         self.db.commit()
         self.db.refresh(ceremony_plan)
-        return ceremony_plan
+        return ceremony_plan.to_dict()
+

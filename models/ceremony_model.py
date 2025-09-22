@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text, func
-from database import Base
+from database import Base, BaseModelMixin
 
-class CeremonyType(Base):
+class CeremonyType(Base, BaseModelMixin):
     __tablename__ = "ceremony_types" # Table for different ceremony types
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, unique=True, nullable=False)
@@ -10,7 +10,7 @@ class CeremonyType(Base):
     description = Column(String, nullable=True)  # Optional description field
 
 
-class CeremonyPlan(Base):
+class CeremonyPlan(Base, BaseModelMixin):
     __tablename__ = "ceremony_plans"
     id = Column(Integer, primary_key=True, autoincrement=True)
     email = Column(String, nullable=False)
