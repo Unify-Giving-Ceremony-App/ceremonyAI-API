@@ -40,7 +40,7 @@ class CeremonyPlanRepository:
         return self.db.query(CeremonyPlan).all()
     
     def add_ceremony_plan(self, email: str, ceremony_type: str, ceremony_title: str, ceremony_date: str, duration: int, ceremony_description: str, participants: str, ceremony_subtype: str = None):    
-        ceremony_plan = CeremonyPlan(user_email=email,
+        ceremony_plan = CeremonyPlan(email=email,
         ceremony_type=ceremony_type,
         ceremony_subtype=ceremony_subtype,
         ceremony_title=ceremony_title,
