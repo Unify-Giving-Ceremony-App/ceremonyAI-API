@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-
+basedir = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(basedir, '.env'))
 
 # Security Configuration
 SECRET_KEY = os.getenv("SECRET_KEY", "default_fallback_secret")
