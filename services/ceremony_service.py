@@ -31,8 +31,9 @@ class CeremonyPlanService:
     def get_all_ceremony_plan(self):
         return self.repo.get_all_ceremony_plan()   
     
-    def add_ceremony_plan(self, email: str, ceremony_type: str, ceremony_title: str, ceremony_date: str, duration: int, ceremony_description: str, participants: str, ceremony_subtype: str = None):
+    def add_ceremony_plan(self, email: str, ceremony_type: str,ceremony_metadata: str = None, voice_type: str = None,background_sound: str = None, ceremonial_companion: str = None,ceremony_duration: int = None, meditation_duration: int = None,ceremony_prompts: str = None, meditation_prompts: str = None,ceremony_datetime: str = None,participants: str = None):
         if not self.user_repo.get_by_email(email):
             raise ValueError("User not found")  # 404 Not Found
-        return self.repo.add_ceremony_plan(email, ceremony_type, ceremony_title, ceremony_date, duration, ceremony_description, participants, ceremony_subtype)
+        return self.repo.add_ceremony_plan(email, ceremony_type,ceremony_metadata,
+    voice_type,background_sound, ceremonial_companion,ceremony_duration, meditation_duration,ceremony_prompts, meditation_prompts,ceremony_datetime,participants)
     
