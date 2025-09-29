@@ -33,7 +33,7 @@ def ceremony_plan():
             return jsonify({"error": "user email is required"}), 400
         service = CeremonyPlanService(g.db_session)
         try:
-            new_plan = service.add_ceremony_plan(email=email, ceremony_type=data.get('ceremony_type'), ceremony_title=data.get('ceremony_title'), ceremony_date=data.get('ceremony_date'), duration=data.get('duration'), ceremony_description=data.get('ceremony_description'), participants=data.get('participants'), ceremony_subtype=data.get('ceremony_subtype'))
+            new_plan = service.add_ceremony_plan(email=email,ceremony_type=data.get('ceremony_type'),ceremony_metadata=data.get('ceremony_metadata'),voice_type=data.get('voice_type'),background_sound=data.get('background_sound'),ceremonial_companion=data.get('ceremonial_companion'),ceremony_duration=data.get('ceremony_duration'),meditation_duration=data.get('meditation_duration'),ceremony_prompts=data.get('ceremony_prompts'),meditation_prompts=data.get('meditation_prompts'),ceremony_datetime=data.get('ceremony_datetime'),participants=data.get('participants'))
             return jsonify(new_plan), 201
         except ValueError as e:
             return jsonify({"error": str(e)}), 400

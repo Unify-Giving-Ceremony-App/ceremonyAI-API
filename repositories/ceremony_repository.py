@@ -48,15 +48,19 @@ class CeremonyPlanRepository:
         if not plans:
             return []
         return [plan.to_dict() for plan in plans] # Return list of plans
-
-    def add_ceremony_plan(self, email: str, ceremony_type: str, ceremony_title: str, ceremony_date: str, duration: int, ceremony_description: str, participants: str, ceremony_subtype: str = None):    
+ 
+    def add_ceremony_plan(self, email: str, ceremony_type: str,ceremony_metadata: str = None, voice_type: str = None,background_sound: str = None, ceremonial_companion: str = None,ceremony_duration: int = None, meditation_duration: int = None,ceremony_prompts: str = None, meditation_prompts: str = None,ceremony_datetime: str = None,participants: str = None):  
         ceremony_plan = CeremonyPlan(email=email,
-        ceremony_type=ceremony_type,
-        ceremony_subtype=ceremony_subtype,
-        ceremony_title=ceremony_title,
-        ceremony_date=ceremony_date,
-        duration=duration,
-        ceremony_description=ceremony_description,
+        ceremony_type=ceremony_type.upper(),
+        ceremony_metadata=ceremony_metadata,
+        voice_type=voice_type.upper(),
+        background_sound=background_sound.upper(),
+        ceremonial_companion=ceremonial_companion,
+        ceremony_duration=ceremony_duration,
+        meditation_duration=meditation_duration,
+        ceremony_prompts=ceremony_prompts,
+        meditation_prompts=meditation_prompts,
+        ceremony_datetime=ceremony_datetime,
         participants=participants)
         self.db.add(ceremony_plan)
         self.db.commit()
